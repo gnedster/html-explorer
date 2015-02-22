@@ -13,7 +13,7 @@ var http = require("follow-redirects").http;
 var https = require("follow-redirects").https;
 var url = require("url");
 
-var port = 80;
+var port = process.env.PORT || 8080;
 var app = connect();
 
 
