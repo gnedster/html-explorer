@@ -67,7 +67,7 @@ app.use(function(req, res){
 
     function errorHandler(e) {
         console.warn("Got error: " + e.message);
-        res.end(e.message);
+        res.end(JSON.stringify(e));
     }
 
     switch(parsedUrl.protocol) {
