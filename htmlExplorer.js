@@ -38,9 +38,9 @@ $(document).ready(function() {
     $("#target").submit(function(e) {
         function errorHandler() {
             $("#flash").show();
-            $("#resp").text("Waiting for input...");
+            $("#resp code").text("Waiting for input...");
             $(".sidebar").find("tbody").html("");
-            console.error("Retrieving html failed!");
+            console.warn("Retrieving html failed!");
         }
 
         var url = $(e.target).find("input[type=url]").val();
