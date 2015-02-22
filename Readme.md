@@ -4,8 +4,6 @@
 
 ## Getting started
 
-  Node version v0.12.0 needs to be installed. Then run the following in the root folder:
-
 ```js
 npm install
 node server.js
