@@ -38,14 +38,24 @@ $(document).ready(function() {
                 addHighlight();
                 console.debug(key);
             })
-            .mouseout(removeHighlight)
+            .mouseout(function(el) {
+                removeHighlight();
+                $(el.target)
+                    .parent("tr")
+                    .find("span.clickCounter")
+                    .text("");
+            })
             .click(function(el){
                 if (_.isString(key) === false) {
                     return;
                 }
 
                 console.debug("scrolling to " + key + ":" + i);
-                $.scrollTo(cachedEl[key][i], 100, {offset: { top:-100}});
+                $(el.target)
+                    .parent("tr")
+                    .find("span.clickCounter")
+                    .text(i + 1);
+                $.scrollTo(cachedEl[key][i], 100, {offset: { top:-100 }});
                 i = (i + 1) % cachedEl[key].length;
             })
 
@@ -95,7 +105,8 @@ $(document).ready(function() {
                     for (key in resp.stats) {
                         if (resp.stats.hasOwnProperty(key) === true) {
                             tbody.push("<tr data-key=" + key + "><td>" +
-                                key + "</td><td>" + resp.stats[key] + "</td</tr>");
+                                key + "</td><td>" + resp.stats[key] +
+                                " <span class='clickCounter'></span></td></tr>");
                         }
 
                         $("#sidebar").find("tbody").html(tbody.join(""));
