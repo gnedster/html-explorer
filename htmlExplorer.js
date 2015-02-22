@@ -31,7 +31,7 @@ $(document).ready(function() {
             cachedEl[key].addClass("highlight");
         }
 
-        $(".sidebar").find("tbody")
+        $("#sidebar").find("tbody")
             .mouseover(function(el){
                 removeHighlight();
                 key = $(el.target).parent("tr").data("key");
@@ -62,7 +62,7 @@ $(document).ready(function() {
         function errorHandler() {
             $("#flash").show();
             $("#resp code").text("Waiting for input...");
-            $(".sidebar").find("tbody").html("");
+            $("#sidebar").find("tbody").html("");
             console.warn("Retrieving html failed!");
         }
 
@@ -98,7 +98,7 @@ $(document).ready(function() {
                                 key + "</td><td>" + resp.stats[key] + "</td</tr>");
                         }
 
-                        $(".sidebar").find("tbody").html(tbody.join(""));
+                        $("#sidebar").find("tbody").html(tbody.join(""));
                     }
 
                     console.log("Retrieving html succeeded!");

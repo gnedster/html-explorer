@@ -27,9 +27,10 @@
                     <div class="form-group">
                         Enter a URL to inspect:
                         <input class="inputUrl" type="url" name="website" size="50" placeholder="http://www.google.com (https not currently supported)" required pattern="http?://.+">
+
+                        <button id="btnSubmit" type="submit" class="btn btn-default">Submit</button>
+                        <i id="spinner" class="fa fa-cog fa-spin"></i>
                     </div>
-                    <button id="btnSubmit" type="submit" class="btn btn-default">Submit</button>
-                    <i id="spinner" class="fa fa-cog fa-spin"></i>
                 </form>
             </div>
         </div>
@@ -41,7 +42,7 @@
     </div>
 
     <div class="wrapper">
-        <div class="sidebar">
+        <div id="sidebar">
             <table class="table table-striped table-condensed">
                 <thead>
                     <tr>

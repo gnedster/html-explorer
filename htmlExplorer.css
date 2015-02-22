@@ -16,7 +16,7 @@ body {
     padding-left: 170px;
 }
 
-.sidebar {
+#sidebar {
     z-index: 1000;
     position: fixed;
     left: 115px;
@@ -26,15 +26,15 @@ body {
     width: 150px;
 }
 
-.sidebar > table {
+#sidebar > table {
     margin-bottom: 0px;
 }
 
-.sidebar > table > tbody {
+#sidebar > table > tbody {
     overflow-y: auto;
     cursor: pointer;
 }
 
-.sidebar > table > tbody > tr:hover {
+#sidebar > table > tbody > tr:hover {
     background-color: yellow;
 }
