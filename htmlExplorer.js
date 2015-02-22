@@ -1,16 +1,16 @@
 $(document).ready(function() {
     console.log("ready!");
 
-    (function () {
-        var key, cachedEl;
+    var highlighter = (function () {
+        var key, cachedEl = {}, i = 0;
 
         function removeHighlight() {
             if (_.isString(key) === false) {
                 return;
             }
 
-            if (_.isObject(cachedEl) === true) {
-                cachedEl.removeClass("highlight");
+            if (_.isObject(cachedEl[key]) === true) {
+                cachedEl[key].removeClass("highlight");
             }
         }
 
@@ -19,20 +19,43 @@ $(document).ready(function() {
                 return;
             }
 
-            cachedEl = $("#resp code")
-                        .find(".hljs-title")
-                        .filter(function(idx) {
-                            return $(this).text() === key;
-                        }).parent();
-            cachedEl.addClass("highlight");
+            if (_.isObject(cachedEl[key]) === false) {
+                cachedEl[key] = $("#resp code")
+                            .find(".hljs-title")
+                            .filter(function(idx) {
+                                return $(this).text() === key;
+                            }).parent();
+            }
+
+            i = 0;
+            cachedEl[key].addClass("highlight");
         }
 
-        $(".sidebar").find("tbody").mouseover(function(el){
-            removeHighlight();
-            key = $(el.target).parent("tr").data("key");
-            addHighlight();
-            console.debug(key);
-        }).mouseout(removeHighlight)
+        $(".sidebar").find("tbody")
+            .mouseover(function(el){
+                removeHighlight();
+                key = $(el.target).parent("tr").data("key");
+                addHighlight();
+                console.debug(key);
+            })
+            .mouseout(removeHighlight)
+            .click(function(el){
+                if (_.isString(key) === false) {
+                    return;
+                }
+
+                console.debug("scrolling to " + key + ":" + i);
+                $.scrollTo(cachedEl[key][i], 100, {offset: { top:-100}});
+                i = (i + 1) % cachedEl[key].length;
+            })
+
+        var o = {
+            flushCache : function() {
+                cachedEl = {};
+            }
+        }
+
+        return o;
     })();
 
     $("#target").submit(function(e) {
@@ -50,6 +73,7 @@ $(document).ready(function() {
         $("#spinner").show();
         $("#flash").hide();
         $("#btnSubmit").prop("disabled", true);
+        highlighter.flushCache();
 
         $.ajax({
             url: "/url",

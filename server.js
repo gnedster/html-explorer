@@ -19,13 +19,20 @@ var app = connect();
 
 //Singleton
 var stats = {};
-var parser = new htmlparser.Parser({
-    onopentag: function(name, attribs){
+
+var parser = (function() {
+    function accumulate(name, attribs){
         stats[name] = stats[name] || 0;
         stats[name] += 1;
     }
-}, {decodeEntities: true});
 
+    var o = new htmlparser.Parser({
+        onopentag: accumulate,
+        onclosetag: accumulate
+    }, {decodeEntities: true});
+
+    return o;
+})();
 
 app.use(compression());
 app.use(serveStatic(__dirname)).listen(port);
