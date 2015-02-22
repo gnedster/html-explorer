@@ -68,10 +68,6 @@ app.use(function(req, res){
             https.request({
                 host: parsedUrl.host,
                 path: parsedUrl.path,
-                port: 443,
-                headers : {
-                    accept: '*/*'
-                },
                 maxRedirects: 3
             }, responseHandler).on("error", errorHandler);
             break;
