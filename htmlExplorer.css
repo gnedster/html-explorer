@@ -1,0 +1,40 @@
+body {
+    padding-top: 65px;
+    height: 100%;
+}
+
+.highlight {
+    background: yellow;
+}
+
+#flash, #spinner {
+    display: none;
+}
+
+.wrapper {
+    min-width: 800px;
+    padding-left: 170px;
+}
+
+.sidebar {
+    z-index: 1000;
+    position: fixed;
+    left: 115px;
+    height: 100%;
+    margin-left: -100px;
+    overflow: scroll;
+    width: 150px;
+}
+
+.sidebar > table {
+    margin-bottom: 0px;
+}
+
+.sidebar > table > tbody {
+    overflow-y: auto;
+    cursor: pointer;
+}
+
+.sidebar > table > tbody > tr:hover {
+    background-color: yellow;
+}
