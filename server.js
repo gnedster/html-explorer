@@ -73,10 +73,13 @@ app.use(function(req, res){
     switch(parsedUrl.protocol) {
         case "https:":
             https.request({
-                host: parsedUrl.host,
-                path: parsedUrl.path,
-                maxRedirects: 3
-            }, responseHandler).on("error", errorHandler);
+                    hostname: parsedUrl.host,
+                    port: 443,
+                    path: parsedUrl.path,
+                    method: 'GET'
+                }, responseHandler)
+                .on('error', errorHandler)
+                .end();
             break;
         case "http:":
             http.get(req.body.url, responseHandler)
