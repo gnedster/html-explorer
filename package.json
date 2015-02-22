@@ -1,0 +1,9 @@
+{
+  "name": "HTML Explorer",
+  "description": "Experimenting with node",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">= 0.12.x",
+    "npm" : ">= 2.6.0"
+  }
+}
