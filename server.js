@@ -21,15 +21,55 @@ var app = connect();
 var stats = {};
 
 var parser = (function() {
-    function accumulate(name, attribs){
+    var voidElements = {
+        area: true,
+        base: true,
+        basefont: true,
+        br: true,
+        col: true,
+        command: true,
+        embed: true,
+        frame: true,
+        hr: true,
+        img: true,
+        input: true,
+        isindex: true,
+        keygen: true,
+        link: true,
+        meta: true,
+        param: true,
+        source: true,
+        track: true,
+        wbr: true,
+
+        //common self closing svg elements
+        path: true,
+        circle: true,
+        ellipse: true,
+        line: true,
+        rect: true,
+        use: true,
+        stop: true,
+        polyline: true,
+        polygone: true
+    };
+
+    function accumulate(name, attribs, onClose){
+        if (onClose === true &&
+            voidElements.hasOwnProperty(name) === true) {
+            return;
+        }
+
         stats[name] = stats[name] || 0;
         stats[name] += 1;
     }
 
     var o = new htmlparser.Parser({
         onopentag: accumulate,
-        onclosetag: accumulate
-    }, {decodeEntities: true});
+        onclosetag: function(name, attribs) {
+            accumulate(name, attribs, true)
+        }
+    }, {decodeEntities: true, verbose: true});
 
     return o;
 })();
