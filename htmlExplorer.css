@@ -13,6 +13,7 @@ body {
 
 .click-counter {
     color: #ccc;
+    pointer-events: none;
 }
 
 .highlight {

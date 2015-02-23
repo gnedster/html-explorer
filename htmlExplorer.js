@@ -2,7 +2,9 @@ $(document).ready(function() {
     console.log("ready!");
 
     var highlighter = (function () {
-        var key, cachedEl = {}, i = 0;
+        var key,
+            cachedEl = {},
+            i = 0;
 
         function removeHighlight() {
             if (_.isString(key) === false) {
@@ -21,9 +23,9 @@ $(document).ready(function() {
 
             if (_.isObject(cachedEl[key]) === false) {
                 cachedEl[key] = $("#resp code")
-                            .find(".hljs-title")
+                            .find(".hljs-tag .hljs-title")
                             .filter(function(idx) {
-                                return $(this).text() === key;
+                                return $(this).text() === key
                             }).parent();
             }
 
@@ -32,29 +34,29 @@ $(document).ready(function() {
         }
 
         $("#sidebar").find("tbody")
-            .mouseover(function(el){
+            .mouseover(function(e){
                 removeHighlight();
-                key = $(el.target).parent("tr").data("key");
+                key = $(e.target).parent("tr").data("key");
                 addHighlight();
-                console.debug(key);
             })
-            .mouseout(function(el) {
+            .mouseout(function(e) {
                 removeHighlight();
-                $(el.target)
+                $(e.target)
                     .parent("tr")
-                    .find("span.click-counter")
+                    .find(".click-counter")
                     .text("");
             })
-            .click(function(el){
+            .click(function(e){
                 if (_.isString(key) === false) {
                     return;
                 }
 
                 console.debug("scrolling to " + key + ":" + i);
-                $(el.target)
+                $(e.target)
                     .parent("tr")
-                    .find("span.click-counter")
+                    .find(".click-counter")
                     .text(i + 1);
+
                 $.scrollTo(cachedEl[key][i], 100, {offset: { top:-100 }});
                 i = (i + 1) % cachedEl[key].length;
             })
@@ -81,7 +83,11 @@ $(document).ready(function() {
             if (isOperational === true) {
                 switch (e.errno) {
                     case "ENOTFOUND":
+                    case "ECONNREFUSED":
                         errorMsg = "URL appears to be invalid. Try another URL.";
+                        break;
+                    case "ETIMEDOUT":
+                        errorMsg = "Connection timed out.";
                         break;
                     default:
                         errorMsg = e.errno;
