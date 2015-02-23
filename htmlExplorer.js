@@ -12,7 +12,10 @@ $(document).ready(function() {
             }
 
             if (_.isObject(cachedEl[key]) === true) {
-                cachedEl[key].removeClass("highlight");
+                cachedEl[key]
+                    .removeClass("highlight")
+
+                $(cachedEl[key][i]).removeClass("selected");
             }
         }
 
@@ -58,6 +61,8 @@ $(document).ready(function() {
                     .text(i + 1);
 
                 $.scrollTo(cachedEl[key][i], 100, {offset: { top:-100 }});
+                $(cachedEl[key][i - 1 < 0 ? cachedEl[key].length - 1 : i - 1]).removeClass("selected");
+                $(cachedEl[key][i]).addClass("selected");
                 i = (i + 1) % cachedEl[key].length;
             })
 

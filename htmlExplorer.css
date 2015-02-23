@@ -20,6 +20,10 @@ body {
     background: yellow;
 }
 
+.highlight.selected {
+    background: aqua;
+}
+
 #flash, #spinner {
     display: none;
 }
