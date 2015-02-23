@@ -4,8 +4,7 @@ $(document).ready(function() {
     var highlighter = (function () {
         var selectedTag = null,
             cachedEl = {},
-            i = -1,
-            tr = null;
+            i = -1; //click counter
 
         function removeHighlight(tag) {
             if (_.isString(tag) === false) {
@@ -38,13 +37,12 @@ $(document).ready(function() {
 
         function clearSelectedTag() {
             removeHighlight(selectedTag);
-            if (tr) {
-                tr.removeClass("highlight")
-                    .find(".click-counter")
-                    .text("");
 
-                tr = null;
-            }
+            $("#sidebar").find("tr[data-tag='" + selectedTag + "']")
+                .removeClass("highlight")
+                .find(".click-counter")
+                .text("");
+
             selectedTag = null;
             i = -1;
         }
@@ -56,30 +54,28 @@ $(document).ready(function() {
                 addHighlight($(e.target).parent("tr").data("tag"));
             })
             .mouseout(function(e){
-                if (selectedTag !== $(e.target).parent("tr").data("tag")) {
-                    removeHighlight($(e.target).parent("tr").data("tag"));
+                var tag = $(e.target).parent("tr").data("tag");
+                if (selectedTag !== tag) {
+                    removeHighlight(tag);
                 }
             })
             .click(function(e){
-                if ($(e.target).parent("tr").data("tag") !== selectedTag) {
+                var tr = $(e.target).parent("tr");
+
+                if (tr.data("tag") !== selectedTag) {
                     clearSelectedTag();
-                    selectedTag = $(e.target).parent("tr").data("tag");
-                    addHighlight(selectedTag);
+                    selectedTag = tr.data("tag");
                 }
 
-                i = (i + 1) % cachedEl[selectedTag].length;
                 if (_.isString(selectedTag) === false) {
                     return;
                 }
 
-                console.debug("scrolling to " + selectedTag + ":" + i);
-
-                tr = $(e.target)
-                    .parent("tr")
-                    .addClass("highlight")
-
+                i = (i + 1) % cachedEl[selectedTag].length;
                 tr.find(".click-counter")
                     .text(i + 1)
+
+                console.debug("scrolling to " + selectedTag + ":" + i);
 
                 $.scrollTo(cachedEl[selectedTag][i], 100, {offset: { top:-100 }});
                 $(cachedEl[selectedTag][i - 1 < 0 ? cachedEl[selectedTag].length - 1 : i - 1]).removeClass("selected");
@@ -101,8 +97,9 @@ $(document).ready(function() {
 
         /**
          * Handles both request error and operational errors
-         * @param  {[type]} e [description]
-         * @return {[type]}   [description]
+         * @param  {Object}  e              Error details
+         * @param  {Boolean} isOperational  Indicates whether or not
+         *                                  the error is operational
          */
         function errorHandler(e, isOperational) {
             var errorMsg = "Unknown error occurred. Try another URL.";
