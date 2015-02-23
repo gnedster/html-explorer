@@ -38,7 +38,13 @@ body {
 }
 
 #sidebar-wrapper {
-    width: 150px;
+    position: fixed;
+    margin-top: -15px;
+    padding-top: 15px;
+    width: 175px;
+    height: 100%;
+    background:white;
+    z-index:1000;
 }
 
 #sidebar {
