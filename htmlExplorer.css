@@ -1,5 +1,5 @@
 body {
-    padding-top: 65px;
+    padding-top: 50px;
     height: 100%;
 }
 
@@ -17,29 +17,25 @@ body {
 }
 
 .highlight {
-    background: yellow;
+    background-color: yellow;
 }
 
 .highlight.selected {
-    background: aqua;
+    background-color: aqua;
 }
 
 #flash, #spinner {
     display: none;
 }
 
-#flash {
-    margin-top: -15px;
-}
-
-.wrapper {
+#main-wrapper {
     min-width: 800px;
     padding-left: 170px;
+    padding-top: 15px
 }
 
 #sidebar-wrapper {
     position: fixed;
-    margin-top: -15px;
     padding-top: 15px;
     width: 175px;
     height: 100%;
@@ -71,5 +67,9 @@ body {
 }
 
 #sidebar > table > tbody > tr:hover {
+    background-color: yellow;
+}
+
+#sidebar > table > tbody > tr.highlight {
     background-color: yellow;
 }

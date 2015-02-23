@@ -2,68 +2,90 @@ $(document).ready(function() {
     console.log("ready!");
 
     var highlighter = (function () {
-        var key,
+        var selectedTag = null,
             cachedEl = {},
-            i = -1;
+            i = -1,
+            tr = null;
 
-        function removeHighlight() {
-            if (_.isString(key) === false) {
+        function removeHighlight(tag) {
+            if (_.isString(tag) === false) {
                 return;
             }
 
-            if (_.isObject(cachedEl[key]) === true) {
-                cachedEl[key]
+            if (_.isObject(cachedEl[tag]) === true) {
+                cachedEl[tag]
                     .removeClass("highlight")
 
-                $(cachedEl[key][i]).removeClass("selected");
+                $(cachedEl[tag][i]).removeClass("selected");
             }
         }
 
-        function addHighlight() {
-            if (_.isString(key) === false) {
+        function addHighlight(tag) {
+            if (_.isString(tag) === false) {
                 return;
             }
 
-            if (_.isObject(cachedEl[key]) === false) {
-                cachedEl[key] = $("#resp code")
+            if (_.isObject(cachedEl[tag]) === false) {
+                cachedEl[tag] = $("#resp code")
                             .find(".hljs-tag .hljs-title")
                             .filter(function(idx) {
-                                return $(this).text() === key
+                                return $(this).text() === tag
                             }).parent();
             }
 
-            i = -1;
-            cachedEl[key].addClass("highlight");
+            cachedEl[tag].addClass("highlight");
         }
+
+        function clearSelectedTag() {
+            removeHighlight(selectedTag);
+            if (tr) {
+                tr.removeClass("highlight")
+                    .find(".click-counter")
+                    .text("");
+
+                tr = null;
+            }
+            selectedTag = null;
+            i = -1;
+        }
+
+        $("#wrapper").click(clearSelectedTag);
 
         $("#sidebar").find("tbody")
             .mouseover(function(e){
-                removeHighlight();
-                key = $(e.target).parent("tr").data("key");
-                addHighlight();
+                addHighlight($(e.target).parent("tr").data("tag"));
             })
-            .mouseout(function(e) {
-                removeHighlight();
-                $(e.target)
-                    .parent("tr")
-                    .find(".click-counter")
-                    .text("");
+            .mouseout(function(e){
+                if (selectedTag !== $(e.target).parent("tr").data("tag")) {
+                    removeHighlight($(e.target).parent("tr").data("tag"));
+                }
             })
             .click(function(e){
-                i = (i + 1) % cachedEl[key].length;
-                if (_.isString(key) === false) {
+                if ($(e.target).parent("tr").data("tag") !== selectedTag) {
+                    clearSelectedTag();
+                    selectedTag = $(e.target).parent("tr").data("tag");
+                    addHighlight(selectedTag);
+                }
+
+                i = (i + 1) % cachedEl[selectedTag].length;
+                if (_.isString(selectedTag) === false) {
                     return;
                 }
 
-                console.debug("scrolling to " + key + ":" + i);
-                $(e.target)
-                    .parent("tr")
-                    .find(".click-counter")
-                    .text(i + 1);
+                console.debug("scrolling to " + selectedTag + ":" + i);
 
-                $.scrollTo(cachedEl[key][i], 100, {offset: { top:-100 }});
-                $(cachedEl[key][i - 1 < 0 ? cachedEl[key].length - 1 : i - 1]).removeClass("selected");
-                $(cachedEl[key][i]).addClass("selected");
+                tr = $(e.target)
+                    .parent("tr")
+                    .addClass("highlight")
+
+                tr.find(".click-counter")
+                    .text(i + 1)
+
+                $.scrollTo(cachedEl[selectedTag][i], 100, {offset: { top:-100 }});
+                $(cachedEl[selectedTag][i - 1 < 0 ? cachedEl[selectedTag].length - 1 : i - 1]).removeClass("selected");
+                $(cachedEl[selectedTag][i]).addClass("selected");
+
+                e.stopPropagation();
             })
 
         var o = {
@@ -142,7 +164,7 @@ $(document).ready(function() {
 
                     for (key in resp.stats) {
                         if (resp.stats.hasOwnProperty(key) === true) {
-                            tbody.push("<tr data-key=" + key + "><td>" +
+                            tbody.push("<tr data-tag=" + key + "><td>" +
                                 key + "</td><td>" + resp.stats[key] +
                                 " <span class='click-counter'></span></td></tr>");
                         }
