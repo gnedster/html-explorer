@@ -4,7 +4,7 @@ $(document).ready(function() {
     var highlighter = (function () {
         var key,
             cachedEl = {},
-            i = 0;
+            i = -1;
 
         function removeHighlight() {
             if (_.isString(key) === false) {
@@ -32,7 +32,7 @@ $(document).ready(function() {
                             }).parent();
             }
 
-            i = 0;
+            i = -1;
             cachedEl[key].addClass("highlight");
         }
 
@@ -50,6 +50,7 @@ $(document).ready(function() {
                     .text("");
             })
             .click(function(e){
+                i = (i + 1) % cachedEl[key].length;
                 if (_.isString(key) === false) {
                     return;
                 }
@@ -63,7 +64,6 @@ $(document).ready(function() {
                 $.scrollTo(cachedEl[key][i], 100, {offset: { top:-100 }});
                 $(cachedEl[key][i - 1 < 0 ? cachedEl[key].length - 1 : i - 1]).removeClass("selected");
                 $(cachedEl[key][i]).addClass("selected");
-                i = (i + 1) % cachedEl[key].length;
             })
 
         var o = {
