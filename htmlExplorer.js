@@ -108,7 +108,7 @@ $(document).ready(function() {
             }
 
             $("#flash").find("span").text(errorMsg);
-            $("#flash").show();
+            $("#flash").show(100, "linear");
 
             $("#resp code").text("Waiting for input...");
             $("#sidebar").find("tbody").html("");
@@ -116,9 +116,8 @@ $(document).ready(function() {
 
         var url = $(e.target).find("input[type=url]").val();
 
-        //TODO: Fix HTTPS
         $("#spinner").show();
-        $("#flash").hide();
+        $("#flash").hide(100, "linear");
         $("#btnSubmit").prop("disabled", true);
         highlighter.flushCache();
 

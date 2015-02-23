@@ -28,6 +28,10 @@ body {
     display: none;
 }
 
+#flash {
+    margin-top: -15px;
+}
+
 .wrapper {
     min-width: 800px;
     padding-left: 170px;
