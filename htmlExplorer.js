@@ -65,6 +65,9 @@ $(document).ready(function() {
                 if (tr.data("tag") !== selectedTag) {
                     clearSelectedTag();
                     selectedTag = tr.data("tag");
+
+                    $("#sidebar").find("tr[data-tag='" + selectedTag + "']")
+                        .addClass("highlight")
                 }
 
                 if (_.isString(selectedTag) === false) {
@@ -119,7 +122,7 @@ $(document).ready(function() {
                 }
             } else {
                 if (e.status === 0) {
-                    errorMsg = "Connection with server lost." +
+                    errorMsg = "Connection with server lost. " +
                         "Please re-establish your connection";
                 } else if (e.status < 200 || e.status > 299) {
                     errorMsg = "Server error occurred.";
