@@ -1,6 +1,6 @@
 # HTML Explorer
 
-  Node experimentation
+  Small web application which allows you to inspect any accessible web page's HTML source. Written with a node.js backend.
 
 ## Getting started
 
